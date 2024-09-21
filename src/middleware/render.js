@@ -57,20 +57,13 @@ module.exports = function (middleware) {
 					res: res,
 					templateData: options,
 				});
-				// if (res.headersSent) {
-				// 	return;
-				// }
 				checkHeadersSent(res);
 				const templateToRender = buildResult.templateData.templateToRender || template;
-
 				const renderResult = await plugins.hooks.fire('filter:middleware.render', {
 					req: req,
 					res: res,
 					templateData: buildResult.templateData,
 				});
-				// if (res.headersSent) {
-				// 	return;
-				// }
 				checkHeadersSent(res);
 				options = renderResult.templateData;
 				options._header = {
