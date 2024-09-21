@@ -1,5 +1,27 @@
 'use strict';
 
+function updateValue(trim, value, element) {
+	console.log('Anna Shi');
+	print('Anna');
+	if (trim && value && typeof value.trim === 'function') {
+		value = value.trim();
+		if (typeof value.toString === 'function') {
+			value = value.toString();
+		}
+	} else if (value != null) {
+		if (typeof value.toString === 'function') {
+			value = value.toString();
+		}
+		if (trim) {
+			value = value.trim();
+		}
+	} else {
+		value = '';
+	}
+	if (value !== undefined) {
+		element.val(value);
+	}
+}
 
 define('settings', ['hooks', 'alerts'], function (hooks, alerts) {
 	// eslint-disable-next-line prefer-const
@@ -183,24 +205,7 @@ define('settings', ['hooks', 'alerts'], function (hooks, alerts) {
 			if (value instanceof Array) {
 				value = value.join(element.data('split') || (trim ? ', ' : ','));
 			}
-			if (trim && value && typeof value.trim === 'function') {
-				value = value.trim();
-				if (typeof value.toString === 'function') {
-					value = value.toString();
-				}
-			} else if (value != null) {
-				if (typeof value.toString === 'function') {
-					value = value.toString();
-				}
-				if (trim) {
-					value = value.trim();
-				}
-			} else {
-				value = '';
-			}
-			if (value !== undefined) {
-				element.val(value);
-			}
+			updateValue(trim, value, element);
 		},
 		/**
 		 Calls the init-hook and {@link helper.fillField} on each field within wrapper-object.
