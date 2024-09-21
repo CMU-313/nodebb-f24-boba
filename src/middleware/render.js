@@ -57,9 +57,10 @@ module.exports = function (middleware) {
 					res: res,
 					templateData: options,
 				});
-				if (res.headersSent) {
-					return;
-				}
+				// if (res.headersSent) {
+				// 	return;
+				// }
+				checkHeadersSent(res);
 				const templateToRender = buildResult.templateData.templateToRender || template;
 
 				const renderResult = await plugins.hooks.fire('filter:middleware.render', {
@@ -67,9 +68,10 @@ module.exports = function (middleware) {
 					res: res,
 					templateData: buildResult.templateData,
 				});
-				if (res.headersSent) {
-					return;
-				}
+				// if (res.headersSent) {
+				// 	return;
+				// }
+				checkHeadersSent(res);
 				options = renderResult.templateData;
 				options._header = {
 					tags: await meta.tags.parse(req, renderResult, res.locals.metaTags, res.locals.linkTags),
