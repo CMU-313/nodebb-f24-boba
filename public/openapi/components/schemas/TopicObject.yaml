@@ -154,6 +154,9 @@ TopicObject:
                 type: number
         isOwner:
           type: boolean
+        answeredByProf:
+          type: boolean
+          default: false
         ignored:
           type: boolean
         followed:

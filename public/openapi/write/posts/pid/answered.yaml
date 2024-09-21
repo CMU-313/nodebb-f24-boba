@@ -1,0 +1,26 @@
+get:
+  summary: Check if a post is answered
+  description: Returns whether the specified post is marked as answered
+  parameters:
+    - in: path 
+      name: pid
+      schema: 
+        type: string
+      required: int
+      description: ID of the post to check
+      example: 2
+  responses:
+    '200':
+      description: Post answered status
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              answered:
+                type: boolean
+                description: Indicates if the post is answered
+    '404':
+      description: Post not found
+    '500':
+      description: Internal server error
