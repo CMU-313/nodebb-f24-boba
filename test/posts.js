@@ -132,6 +132,46 @@ describe('Post\'s', () => {
 		});
 	});
 
+	describe('endorsing', () => {
+		it('should allow a user to endorse a post', async () => {
+			await posts.endorse(postData.pid, voterUid);
+			const updatedPost = await posts.getPostFields(postData.pid, ['endorsedBy']);
+			assert.equal(updatedPost.endorsedBy, voterUid);
+		});
+
+		it('should not allow a user to endorse the same post again', async () => {
+			try {
+				await posts.endorse(postData.pid, voterUid);
+				assert.fail('Expected error not thrown');
+			} catch (err) {
+				assert.equal(err.message, '[[error:post-already-endorsed]]');
+			}
+		});
+
+		it('should allow the user to unendorse the post', async () => {
+			await posts.unendorse(postData.pid, voterUid);
+			const updatedPost = await posts.getPostFields(postData.pid, ['endorsedBy']);
+			console.log(updatedPost);
+			assert.equal(updatedPost.endorsedBy, null);
+		});
+
+		it('should not allow a user to unendorse a post they have not endorsed', async () => {
+			try {
+				await posts.unendorse(postData.pid, voterUid);
+				assert.fail('Expected error not thrown');
+			} catch (err) {
+				assert.equal(err.message, '[[error:not-endorsed-by-user]]');
+			}
+		});
+
+		it('should allow a different user to endorse the post after it has been unendorsed', async () => {
+			const newVoterUid = await user.create({ username: 'newEndorser' });
+			await posts.endorse(postData.pid, newVoterUid);
+			const updatedPost = await posts.getPostFields(postData.pid, ['endorsedBy']);
+			assert.equal(updatedPost.endorsedBy, newVoterUid);
+		});
+	});
+
 	describe('voting', () => {
 		it('should fail to upvote post if group does not have upvote permission', async () => {
 			await privileges.categories.rescind(['groups:posts:upvote', 'groups:posts:downvote'], cid, 'registered-users');

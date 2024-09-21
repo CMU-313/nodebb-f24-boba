@@ -64,6 +64,21 @@ get:
                     type: boolean
                   downvoted:
                     type: boolean
+                  endorsedBy:
+                    type: number
+                    description: ID of the user who endorsed the post
+            required:
+              - pid
+              - uid
+              - tid
+              - content
+              - timestamp
+              - upvotes
+              - downvotes
+              - timestampISO
+              - upvoted
+              - downvoted
+              - endorsedBy
 put:
   tags:
     - posts
