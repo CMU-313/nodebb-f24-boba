@@ -23,6 +23,7 @@ require('./delete')(Messaging);
 require('./edit')(Messaging);
 require('./rooms')(Messaging);
 require('./unread')(Messaging);
+require('./answered')(Messaging);
 require('./notifications')(Messaging);
 require('./pins')(Messaging);
 

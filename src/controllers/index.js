@@ -18,6 +18,7 @@ Controllers.posts = require('./posts');
 Controllers.categories = require('./categories');
 Controllers.category = require('./category');
 Controllers.unread = require('./unread');
+Controllers.answered = require('./answered');
 Controllers.recent = require('./recent');
 Controllers.popular = require('./popular');
 Controllers.top = require('./top');
