@@ -125,6 +125,13 @@ module.exports = function (middleware) {
 		next();
 	};
 
+	function checkHeadersSent(res) {
+		if (res.headersSent) {
+			return true;
+		}
+		return false;
+	}
+
 	async function getLoggedInUser(req) {
 		if (req.user) {
 			return await user.getUserData(req.uid);
