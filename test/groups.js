@@ -1021,6 +1021,16 @@ describe('Groups', () => {
 			assert.equal(updatedData.private, false);
 		});
 
+		it('should fail to join group if user does not exist', async () => {
+			const nonExistentUid = 123456789;
+			try {
+				await apiGroups.join({ uid: adminUid }, { uid: nonExistentUid, slug: 'test' });
+				assert(false);
+			} catch (err) {
+				assert.strictEqual(err.message, '[[error:invalid-uid]]');
+			}
+		});
+
 		it('should fail to create a group with name guests', async () => {
 			try {
 				await apiGroups.create({ uid: adminUid }, { name: 'guests' });
