@@ -118,19 +118,16 @@ async function canSearchMembers(uid, groupName) {
 	}
 }
 
-groupsAPI.join = async function (caller, data) {
+function validateJoinRequest(caller, data) {
 	if (!data) {
 		throw new Error('[[error:invalid-data]]');
 	}
 	if (caller.uid <= 0 || !data.uid) {
 		throw new Error('[[error:invalid-uid]]');
 	}
+}
 
-	const groupName = await groups.getGroupNameByGroupSlug(data.slug);
-	if (!groupName) {
-		throw new Error('[[error:no-group]]');
-	}
-
+async function checkPrivileges(caller, groupName) {
 	const isCallerAdmin = await privileges.admin.can('admin:groups', caller.uid);
 	if (!isCallerAdmin && (
 		groups.systemGroups.includes(groupName) ||
@@ -138,6 +135,22 @@ groupsAPI.join = async function (caller, data) {
 	)) {
 		throw new Error('[[error:not-allowed]]');
 	}
+	return isCallerAdmin;
+}
+
+function isGroupJoinDisabledForCaller(isCallerAdmin, isSelf, groupData) {
+	return !isCallerAdmin && isSelf && groupData.private && groupData.disableJoinRequests;
+}
+
+groupsAPI.join = async function (caller, data) {
+	validateJoinRequest(caller, data);
+
+	const groupName = await groups.getGroupNameByGroupSlug(data.slug);
+	if (!groupName) {
+		throw new Error('[[error:no-group]]');
+	}
+
+	const isCallerAdmin = await checkPrivileges(caller, groupName);
 
 	const [groupData, userExists] = await Promise.all([
 		groups.getGroupData(groupName),
@@ -159,7 +172,7 @@ groupsAPI.join = async function (caller, data) {
 		return;
 	}
 
-	if (!isCallerAdmin && isSelf && groupData.private && groupData.disableJoinRequests) {
+	if (isGroupJoinDisabledForCaller(isCallerAdmin, isSelf, groupData)) {
 		throw new Error('[[error:group-join-disabled]]');
 	}
 
