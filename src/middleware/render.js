@@ -57,6 +57,7 @@ module.exports = function (middleware) {
 					res: res,
 					templateData: options,
 				});
+
 				checkHeadersSent(res);
 				const templateToRender = buildResult.templateData.templateToRender || template;
 				const renderResult = await plugins.hooks.fire('filter:middleware.render', {
