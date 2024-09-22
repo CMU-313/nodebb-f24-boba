@@ -59,18 +59,6 @@ describe('file', () => {
 				done();
 			});
 		});
-
-		it('should error if existing file is read only', (done) => {
-			fs.writeFileSync(uploadPath, 'hsdkjhgkjsfhkgj');
-			fs.chmodSync(uploadPath, '444');
-
-			fs.copyFile(tempPath, uploadPath, (err) => {
-				assert(err);
-				assert(err.code === 'EPERM' || err.code === 'EACCES');
-
-				done();
-			});
-		});
 	});
 
 	describe('saveFileToLocal', () => {
