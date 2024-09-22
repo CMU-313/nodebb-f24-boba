@@ -53,6 +53,31 @@ module.exports = function (Posts) {
 		await db.setObject(`post:${pid}`, data);
 		plugins.hooks.fire('action:post.setFields', { data: { ...data, pid } });
 	};
+
+	//3 methods  of these code and function ideas were suggested by ChatGPT
+	Posts.addEndorsement = async function (pid, uid) {
+		// Check if the user has already endorsed this post
+		const alreadyEndorsed = await db.isMember(`post:${pid}:endorsements`, uid);
+		if (alreadyEndorsed) {
+		  throw new Error('[[error:already-endorsed]]');
+		}
+		await db.setAdd(`post:${pid}:endorsements`, uid);
+	};
+	  
+	Posts.removeEndorsement = async function (pid, uid) {
+		// Check if the user has not endorsed this post
+		const alreadyEndorsed = await db.isMember(`post:${pid}:endorsements`, uid);
+		if (!alreadyEndorsed) {
+		  throw new Error('[[error:not-endorsed]]'); 
+		}
+		await db.setRemove(`post:${pid}:endorsements`, uid);
+	};
+	  
+	Posts.getEndorsementCount = async function (pid) {
+		return await db.setCount(`post:${pid}:endorsements`);
+	};
+	  
+	  
 };
 
 function modifyPost(post, fields) {
