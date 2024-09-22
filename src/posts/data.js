@@ -59,7 +59,7 @@ module.exports = function (Posts) {
 		// Check if the user has already endorsed this post
 		const alreadyEndorsed = await db.isMember(`post:${pid}:endorsements`, uid);
 		if (alreadyEndorsed) {
-		  throw new Error('[[error:already-endorsed]]');
+		  throw new Error('[[error:already-endorsed]]'); 
 		}
 		await db.setAdd(`post:${pid}:endorsements`, uid);
 	};
@@ -76,7 +76,6 @@ module.exports = function (Posts) {
 	Posts.getEndorsementCount = async function (pid) {
 		return await db.setCount(`post:${pid}:endorsements`);
 	};
-	  
 	  
 };
 
