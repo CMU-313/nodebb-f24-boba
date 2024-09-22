@@ -86,7 +86,6 @@
 	"post-edit-duration-expired-days": "You are only allowed to edit posts for %1 day(s) after posting",
 	"post-edit-duration-expired-days-hours": "You are only allowed to edit posts for %1 day(s) %2 hour(s) after posting",
 
-	"post-delete-duration-expired": "You are only allowed to delete posts for %1 second(s) after posting",
 	"post-delete-duration-expired-minutes": "You are only allowed to delete posts for %1 minute(s) after posting",
 	"post-delete-duration-expired-minutes-seconds": "You are only allowed to delete posts for %1 minute(s) %2 second(s) after posting",
 	"post-delete-duration-expired-hours": "You are only allowed to delete posts for %1 hour(s) after posting",
@@ -164,6 +163,9 @@
 
 	"post-already-deleted": "This post has already been deleted",
 	"post-already-restored": "This post has already been restored",
+	
+	"post-already-endorsed": "This post has already been endorsed",
+	"not-endorsed-by-user": "This post has not been endorsed",
 
 	"topic-already-deleted": "This topic has already been deleted",
 	"topic-already-restored": "This topic has already been restored",
