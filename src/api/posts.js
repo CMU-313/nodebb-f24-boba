@@ -512,3 +512,75 @@ postsAPI.getReplies = async (caller, { pid }) => {
 
 	return postData;
 };
+
+//This is mostly Gen AI generated code to get APIs for endorse and un-endorse
+postsAPI.endorse = async function (caller, data) {
+	if (!data || !data.pid) {
+		throw new Error('[[error:invalid-data]]');
+	}
+
+	// Check if the user is logged in
+	if (!caller.uid) {
+		throw new Error('[[error:not-logged-in]]');
+	}
+
+	// Check if the user has the privilege to endorse the post
+	const canEndorse = await privileges.posts.can('endorse', data.pid, caller.uid);
+	if (!canEndorse) {
+		throw new Error('[[error:no-privileges]]');
+	}
+
+	// Add the endorsement
+	await posts.addEndorsement(data.pid, caller.uid);
+
+	// Log the endorsement event
+	await events.log({
+		type: 'post-endorse',
+		uid: caller.uid,
+		ip: caller.ip,
+		pid: data.pid,
+	});
+
+	// Notify the post owner
+	const postOwnerUid = await posts.getPostField(data.pid, 'uid');
+	if (postOwnerUid && postOwnerUid !== caller.uid) {
+		await socketHelpers.sendNotificationToPostOwner(data.pid, caller.uid, 'endorse', 'notifications:endorsed-your-post');
+	}
+
+	// Return the updated endorsement count
+	const endorsementCount = await posts.getEndorsementCount(data.pid);
+	return { endorsementCount };
+};
+
+postsAPI.unendorse = async function (caller, data) {
+	if (!data || !data.pid) {
+		throw new Error('[[error:invalid-data]]');
+	}
+
+	// Check if the user is logged in
+	if (!caller.uid) {
+		throw new Error('[[error:not-logged-in]]');
+	}
+
+	// Check if the user has the privilege to unendorse the post
+	const canUnendorse = await privileges.posts.can('endorse', data.pid, caller.uid);
+	if (!canUnendorse) {
+		throw new Error('[[error:no-privileges]]');
+	}
+
+	// Remove the endorsement
+	await posts.removeEndorsement(data.pid, caller.uid);
+
+	// Log the unendorsement event
+	await events.log({
+		type: 'post-unendorse',
+		uid: caller.uid,
+		ip: caller.ip,
+		pid: data.pid,
+	});
+
+	// Return the updated endorsement count
+	const endorsementCount = await posts.getEndorsementCount(data.pid);
+	return { endorsementCount };
+};
+
