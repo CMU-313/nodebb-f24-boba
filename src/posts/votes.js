@@ -98,6 +98,23 @@ module.exports = function (Posts) {
 		return await db.getSetsMembers(pids.map(pid => `pid:${pid}:upvote`));
 	};
 
+	Posts.endorse = async function (pid, uid) {
+		const postData = await Posts.getPostFields(pid, ['endorsedBy']);
+		if (postData.endorsedBy) {
+			throw new Error('[[error:post-already-endorsed]]');
+		}
+		await Posts.setPostField(pid, 'endorsedBy', uid);
+	};
+
+	Posts.unendorse = async function (pid, uid) {
+		const postData = await Posts.getPostFields(pid, ['endorsedBy']);
+		if (postData.endorsedBy === uid) {
+			await Posts.setPostField(pid, 'endorsedBy', null);
+		} else {
+			throw new Error('[[error:not-endorsed-by-user]]');
+		}
+	};
+
 	function voteInProgress(pid, uid) {
 		return Array.isArray(votesInProgress[uid]) && votesInProgress[uid].includes(parseInt(pid, 10));
 	}

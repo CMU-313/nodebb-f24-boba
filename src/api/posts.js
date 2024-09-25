@@ -308,6 +308,20 @@ postsAPI.unvote = async function (caller, data) {
 	return await apiHelpers.postCommand(caller, 'unvote', 'voted', '', data);
 };
 
+postsAPI.endorse = async function (caller, data) {
+	if (!data || !data.pid || !data.uid) {
+		throw new Error('[[error:invalid-data]]');
+	}
+	await posts.endorse(data.pid, data.uid);
+};
+
+postsAPI.unendorse = async function (caller, data) {
+    if (!data || !data.pid || !data.uid) {
+        throw new Error('[[error:invalid-data]]');
+    }
+    await posts.unendorse(data.pid, data.uid);
+};
+
 postsAPI.getVoters = async function (caller, data) {
 	if (!data || !data.pid) {
 		throw new Error('[[error:invalid-data]]');
