@@ -3,6 +3,7 @@
 const db = require('../database');
 const plugins = require('../plugins');
 const utils = require('../utils');
+const dbSets = require('../database/redis/sets');
 
 const intFields = [
 	'uid', 'pid', 'tid', 'deleted', 'timestamp',
@@ -53,6 +54,29 @@ module.exports = function (Posts) {
 		await db.setObject(`post:${pid}`, data);
 		plugins.hooks.fire('action:post.setFields', { data: { ...data, pid } });
 	};
+
+	//3 methods  of these code and function ideas were suggested by ChatGPT
+	Posts.addEndorsement = async function (pid, uid) {
+		const alreadyEndorsed = await dbSets.isSetMember(`post:${pid}:endorsements`, uid);
+		if (alreadyEndorsed) {
+		  throw new Error('[[error:already-endorsed]]'); 
+		}
+		await dbSets.setAdd(`post:${pid}:endorsements`, uid);
+	  };
+	  
+	Posts.removeEndorsement = async function (pid, uid) {
+		const alreadyEndorsed = await dbSets.isSetMember(`post:${pid}:endorsements`, uid);
+		if (!alreadyEndorsed) {
+		  throw new Error('[[error:not-endorsed]]'); 
+		}
+		await dbSets.setRemove(`post:${pid}:endorsements`, uid);
+	};
+	  
+	Posts.getEndorsementCount = async function (pid) {
+		return await dbSets.setCount(`post:${pid}:endorsements`);
+	};
+	  
+	  
 };
 
 function modifyPost(post, fields) {
