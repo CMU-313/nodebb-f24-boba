@@ -512,3 +512,11 @@ postsAPI.getReplies = async (caller, { pid }) => {
 
 	return postData;
 };
+
+postsAPI.endorse = async (caller, { pid }) => {
+    return await posts.endorse(pid, caller.uid);
+};
+
+postsAPI.unendorse = async (caller, { pid }) => {
+    return await posts.unendorse(pid, caller.uid);
+};
