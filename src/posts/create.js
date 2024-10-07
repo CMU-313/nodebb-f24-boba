@@ -36,7 +36,7 @@ module.exports = function (Posts) {
 			tid: tid,
 			content: content,
 			timestamp: timestamp,
-			endorsed: endorsed
+			endorsed: endorsed,
 		};
 
 		if (data.toPid) {

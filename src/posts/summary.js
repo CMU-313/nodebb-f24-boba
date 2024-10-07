@@ -51,7 +51,7 @@ module.exports = function (Posts) {
 			post.category = post.topic && cidToCategory[post.topic.cid];
 			post.isMainPost = post.topic && post.pid === post.topic.mainPid;
 			post.deleted = post.deleted === 1;
-			post.endorsed = post.endorsed;
+			post.endorsed = post.endorsed === true;
 			post.timestampISO = utils.toISOString(post.timestamp);
 		});
 
