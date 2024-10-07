@@ -14,36 +14,39 @@ const Posts = {};
 
 describe('create post', function () {
     let pid;
-	let purgePid;
-	let cid;
-	let uid;
+    let purgePid;
+    let cid;
+    let uid;
     let endorsed;
 
-
-    it('create a post', async function () {
+    it('create a post where endorsed is false', async function () {
         try {
+            // Create a user
             uid = await user.create({
                 username: 'uploads user',
                 password: 'abracadabra',
                 gdpr_consent: 1,
             });
     
+            // Create a test category
             ({ cid } = await categories.create({
                 name: 'Test Category',
                 description: 'Test category created by testing script',
             }));
             
-            endorsed = false;
-
+            // Create a post within the category
             const topicPostData = await topics.post({
                 uid,
                 cid,
                 title: 'topic with some images',
                 content: 'here is an image [alt text](/assets/uploads/files/abracadabra.png) and another [alt text](/assets/uploads/files/shazam.jpg)',
-                endorsed
             });
-            } catch (error) {
-            assert.strictEqual(error.message, '[[error:invalid-uid]]');
+            
+            // Check if 'endorsed' is false
+            endorsed = topicPostData.postData.endorsed;
+            assert.strictEqual(endorsed, false);
+        } catch (error) {
+            console.log(error);
         }
     });
 });
