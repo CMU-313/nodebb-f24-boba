@@ -132,36 +132,33 @@ describe('Post\'s', () => {
 		});
 	});
 
-	describe('endorsing and unendorsing', function () {
-        let testPid;
-        let testUid;
-
-        before(async () => {
-            testUid = await user.create({ username: 'endorser' });
-            const postResult = await topics.post({
-                uid: testUid,
-                cid: cid,
-                title: 'test topic for endorsement feature',
-                content: 'endorsement topic content',
-            });
-            testPid = postResult.postData.pid;
-        });
-
-        it('should mark post as endorsed', async function () {
-            const caller = { uid: testUid };
-            const data = { pid: testPid };
-            const result = await apiPosts.endorse(caller, data);
-            assert.strictEqual(result.isEndorsed, true);
-        });
-
-        it('should change post to unendorsed', async function () {
-            await apiPosts.endorse({ uid: testUid }, { pid: testPid }); 
-            const caller = { uid: testUid };
-            const data = { pid: testPid };
-            const result = await apiPosts.unendorse(caller, data);
-            assert.strictEqual(result.isEndorsed, false);
-        });
-    });
+	describe('endorsing and unendorsing', () => {
+		let testPid;
+		let testUid;
+		before(async () => {
+			testUid = await user.create({ username: 'endorser' });
+			const postResult = await topics.post({
+				uid: testUid,
+				cid: cid,
+				title: 'test topic for endorsement feature',
+				content: 'endorsement topic content',
+			});
+			testPid = postResult.postData.pid;
+		});
+		it('should mark post as endorsed', async () => {
+			const caller = { uid: testUid };
+			const data = { pid: testPid };
+			const result = await apiPosts.endorse(caller, data);
+			assert.strictEqual(result.isEndorsed, true);
+		});
+		it('should change post to unendorsed', async () => {
+			await apiPosts.endorse({ uid: testUid }, { pid: testPid });
+			const caller = { uid: testUid };
+			const data = { pid: testPid };
+			const result = await apiPosts.unendorse(caller, data);
+			assert.strictEqual(result.isEndorsed, false);
+		});
+	});
 
 	describe('voting', () => {
 		it('should fail to upvote post if group does not have upvote permission', async () => {
