@@ -120,6 +120,9 @@ module.exports = function (Topics) {
 		const tid = await Topics.create(data);
 
 		let postData = data;
+		if (postData.endorsed === undefined) {
+			postData.endorsed = false;
+		}
 		postData.tid = tid;
 		postData.ip = data.req ? data.req.ip : null;
 		postData.isMain = true;
