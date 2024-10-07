@@ -2,6 +2,7 @@
 
 const db = require('../database');
 const plugins = require('../plugins');
+const privileges = require('../privileges');
 
 module.exports = function (Posts) {
     Posts.endorse = async function (pid, uid) {
@@ -15,6 +16,12 @@ module.exports = function (Posts) {
     async function toggleEndorse(type, pid, uid) {
         if (parseInt(uid, 10) <= 0) {
             throw new Error('[[error:not-logged-in]]');
+        }
+
+        const isAllowed = await privileges.posts.canEndorse(uid);
+
+        if (!isAllowed) {
+            throw new Error('[[error:permission-denied]]');
         }
 
         const isEndorsing = type === 'endorse';

@@ -133,33 +133,72 @@ describe('Post\'s', () => {
 	});
 
 	describe('endorsing and unendorsing', function () {
-        let testPid;
-        let testUid;
+        let adminUid;
+		let globalModUid;
+		let regularUserUid;
+		let postResult;
 
         before(async () => {
-            testUid = await user.create({ username: 'endorser' });
-            const postResult = await topics.post({
-                uid: testUid,
-                cid: cid,
-                title: 'test topic for endorsement feature',
-                content: 'endorsement topic content',
-            });
-            testPid = postResult.postData.pid;
+			// adminUid = await user.create({ username: 'admin' });
+			// await groups.join('administrators', adminUid);
+
+			adminUid = await user.create({ username: 'admin', password: '123456' });
+			await groups.join('administrators', adminUid);
+			
+			globalModUid = await user.create({ username: 'global mod' });
+			await groups.join('Global Moderators', globalModUid);
+			
+			regularUserUid = await user.create({ username: 'regular user' });
+
+			({ cid } = await categories.create({
+				name: 'test endorsement category',
+				description: 'category for testing endorsements',
+			}));
+
+			postResult = await topics.post({
+				uid: regularUserUid,
+				cid: cid,
+				title: 'test topic for endorsement feature',
+				content: 'endorsement topic content',
+			});
         });
 
-        it('should mark post as endorsed', async function () {
-            const caller = { uid: testUid };
-            const data = { pid: testPid };
-            const result = await apiPosts.endorse(caller, data);
-            assert.strictEqual(result.isEndorsed, true);
+        it('should allow an admin to endorse a post', async function () {
+            const result = await apiPosts.endorse(postResult.postData.pid, adminUid);
+        	assert.strictEqual(result.isEndorsed, true);
         });
 
-        it('should change post to unendorsed', async function () {
-            await apiPosts.endorse({ uid: testUid }, { pid: testPid }); 
-            const caller = { uid: testUid };
-            const data = { pid: testPid };
-            const result = await apiPosts.unendorse(caller, data);
-            assert.strictEqual(result.isEndorsed, false);
+		it('should allow a global mod to endorse a post', async function () {
+			const result = await apiPosts.endorse(postResult.postData.pid, globalModUid);
+			assert.strictEqual(result.isEndorsed, true);
+        });
+
+		it('should not allow a regular user to endorse a post', async () => {
+			try {
+				await apiPosts.endorse(postResult.postData.pid, regularUserUid);
+				assert.fail('Regular user should not be able to endorse a post');
+			} catch (err) {
+				assert.strictEqual(err.message, '[[error:permission-denied]]');
+			}
+		});
+
+		it('should allow an admin to unendorse a post', async () => {
+			const result = await apiPosts.unendorse(postResult.postData.pid, adminUid);
+			assert.strictEqual(result.isEndorsed, false);
+		});
+
+		it('should allow a global mod to unendorse a post', async () => {
+			const result = await apiPosts.unendorse(postResult.postData.pid, globalModUid);
+			assert.strictEqual(result.isEndorsed, false);
+		});
+	
+        it('should not allow a regular user to unendorse a post', async function () {
+			try {
+				await apiPosts.unendorse(postResult.postData.pid, regularUserUid);
+				assert.fail('Regular user should not be able to unendorse a post');
+			} catch (err) {
+				assert.strictEqual(err.message, '[[error:permission-denied]]');
+			}
         });
     });
 

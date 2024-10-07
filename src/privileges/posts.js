@@ -225,6 +225,18 @@ privsPosts.canPurge = async function (pid, uid) {
 	return (results.purge && (results.owner || results.isModerator)) || results.isAdmin;
 };
 
+privsPosts.canEndorse = async function (uid) {
+    if (parseInt(uid, 10) <= 0) {
+        return false;
+    }
+    const isAdmin = await user.isAdministrator(uid);
+    if (isAdmin) {
+        return true;
+    }
+    const isGlobalMod = await user.isGlobalModerator(uid);
+    return isGlobalMod;
+};
+
 async function isAdminOrMod(pid, uid) {
 	if (parseInt(uid, 10) <= 0) {
 		return false;
