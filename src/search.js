@@ -177,7 +177,7 @@ async function filterAndSort(pids, data) {
 }
 
 async function getMatchedPosts(pids, data) {
-	const postFields = ['pid', 'uid', 'tid', 'timestamp', 'deleted', 'upvotes', 'downvotes'];
+	const postFields = ['pid', 'uid', 'tid', 'timestamp', 'deleted', 'upvotes', 'downvotes', 'endorsed'];
 
 	let postsData = await posts.getPostsFields(pids, postFields);
 	postsData = postsData.filter(post => post && !post.deleted);

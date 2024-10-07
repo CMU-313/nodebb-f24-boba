@@ -71,6 +71,8 @@ get:
                           type: number
                         downvotes:
                           type: number
+                        endorsed:
+                          type: number
                         bookmarks:
                           type: number
                         deleterUid:

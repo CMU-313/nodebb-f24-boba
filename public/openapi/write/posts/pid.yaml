@@ -54,6 +54,8 @@ get:
                     type: number
                   votes:
                     type: number
+                  endorsed:
+                    type: number
                   timestampISO:
                     type: string
                     description: An ISO 8601 formatted date string (complementing `timestamp`)

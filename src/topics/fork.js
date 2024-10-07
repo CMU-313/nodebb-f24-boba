@@ -92,7 +92,7 @@ module.exports = function (Topics) {
 		if (!forceScheduled && topicData.scheduled) {
 			throw new Error('[[error:cant-move-posts-to-scheduled]]');
 		}
-		const postData = await posts.getPostFields(pid, ['tid', 'uid', 'timestamp', 'upvotes', 'downvotes']);
+		const postData = await posts.getPostFields(pid, ['tid', 'uid', 'timestamp', 'upvotes', 'downvotes', 'endorsed']);
 		if (!postData || !postData.tid) {
 			throw new Error('[[error:no-post]]');
 		}

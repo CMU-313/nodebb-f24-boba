@@ -6,7 +6,7 @@ const utils = require('../utils');
 
 const intFields = [
 	'uid', 'pid', 'tid', 'deleted', 'timestamp',
-	'upvotes', 'downvotes', 'deleterUid', 'edited',
+	'upvotes', 'downvotes', 'endorsed', 'deleterUid', 'edited',
 	'replies', 'bookmarks',
 ];
 
@@ -66,6 +66,10 @@ function modifyPost(post, fields) {
 		}
 		if (post.hasOwnProperty('edited')) {
 			post.editedISO = post.edited !== 0 ? utils.toISOString(post.edited) : '';
+		}
+
+		if (post.hasOwnProperty('endorsed')) {
+			post.endorsed = post.endorsed ? post.endorsed : false;
 		}
 	}
 }

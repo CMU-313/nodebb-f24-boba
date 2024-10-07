@@ -51,6 +51,8 @@ get:
                           type: number
                         bookmarks:
                           type: number
+                        endorsed:
+                          type: number
                         deleterUid:
                           type: number
                         edited:
