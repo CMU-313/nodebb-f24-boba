@@ -102,6 +102,7 @@ module.exports = function (SocketPosts) {
 	// };
 
 	SocketPosts.endorse = async function (socket, data) {
+		console.log("VICKY8 Socket handshake query: ", socket.handshake.query);
 		const uid = socket.handshake.query.uid;
 		if (!uid || !data || !data.pid ) {
 			throw new Error('[error:invalid-data');

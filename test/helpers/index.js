@@ -60,6 +60,8 @@ helpers.logoutUser = async function (jar) {
 };
 
 helpers.connectSocketIO = function (res, csrf_token, uid) {
+	console.log("VICKY7 UID passed to connectSocketIO", uid);
+
 	const io = require('socket.io-client');
 	const cookie = res.headers['set-cookie'];
 

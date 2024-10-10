@@ -50,7 +50,11 @@ describe('socket.io', () => {
 
 	it('should connect and auth properly', async () => {
 		const { response, csrf_token } = await helpers.loginUser('admin', 'adminpwd');
-		const uid = response.user.uid;
+		console.log("VICKY5 Login response object: ", response);
+
+		const uid = response.user?.uid || 'No UID';
+		console.log("VICKY6 Retrieved UID: ", uid);
+
 		io = await helpers.connectSocketIO(response, csrf_token, uid);
 		assert(io);
 		assert(io.emit);
