@@ -94,12 +94,20 @@ module.exports = function (SocketPosts) {
 		await Promise.all(logs);
 	};
 
+	// SocketPosts.endorse = async function (socket, data) {
+	// 	if (!data || !data.pid) {
+	// 		throw new Error('[[error:invalid-data]]');
+	// 	}
+	// 	return await apiPosts.endorse(socket, { pid: data.pid });
+	// };
+
 	SocketPosts.endorse = async function (socket, data) {
-		if (!data || !data.pid) {
-			throw new Error('[[error:invalid-data]]');
+		const uid = socket.handshake.query.uid;
+		if (!uid || !data || !data.pid ) {
+			throw new Error('[error:invalid-data');
 		}
-		return await apiPosts.endorse(socket, { pid: data.pid });
-	};
+		return await apiPosts.endorse({ uid }, { pid: data.pid });
+	}
 
 	SocketPosts.unendorse = async function (socket, data) {
 		if (!data || !data.pid) {

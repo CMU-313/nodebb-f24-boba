@@ -59,9 +59,10 @@ helpers.logoutUser = async function (jar) {
 	return { response, body };
 };
 
-helpers.connectSocketIO = function (res, csrf_token) {
+helpers.connectSocketIO = function (res, csrf_token, uid) {
 	const io = require('socket.io-client');
 	const cookie = res.headers['set-cookie'];
+
 	const socket = io(nconf.get('base_url'), {
 		path: `${nconf.get('relative_path')}/socket.io`,
 		extraHeaders: {
@@ -70,6 +71,7 @@ helpers.connectSocketIO = function (res, csrf_token) {
 		},
 		query: {
 			_csrf: csrf_token,
+			uid: uid
 		},
 	});
 	return new Promise((resolve, reject) => {

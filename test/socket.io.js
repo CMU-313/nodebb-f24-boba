@@ -50,7 +50,8 @@ describe('socket.io', () => {
 
 	it('should connect and auth properly', async () => {
 		const { response, csrf_token } = await helpers.loginUser('admin', 'adminpwd');
-		io = await helpers.connectSocketIO(response, csrf_token);
+		const uid = response.user.uid;
+		io = await helpers.connectSocketIO(response, csrf_token, uid);
 		assert(io);
 		assert(io.emit);
 	});
