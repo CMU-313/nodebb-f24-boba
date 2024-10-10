@@ -227,13 +227,19 @@ privsPosts.canPurge = async function (pid, uid) {
 
 privsPosts.canEndorse = async function (uid) {
     if (parseInt(uid, 10) <= 0) {
+		console.log("VICKY CHEN HERE");
+		console.log("Invalid UID", uid);
         return false;
     }
+	console.log("Checking if UID", uid, "is admin...");
     const isAdmin = await user.isAdministrator(uid);
+	console.log("isAdmin result for UID", uid, ":", isAdmin);
     if (isAdmin) {
         return true;
     }
+	console.log("Checking if UID", uid, "is global moderator...");
     const isGlobalMod = await user.isGlobalModerator(uid);
+	console.log("isGlobalMod result for UID", uid, ":", isGlobalMod);
     return isGlobalMod;
 };
 
