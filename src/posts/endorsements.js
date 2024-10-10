@@ -17,7 +17,7 @@ module.exports = function (Posts) {
         if (parseInt(uid, 10) <= 0) {
             throw new Error('[[error:not-logged-in]]');
         }
-
+        console.log("USER ID BEFORE CALLING CAN ENDORSE VICKY: ", uid);
         const isAllowed = await privileges.posts.canEndorse(uid);
 
         if (!isAllowed) {
