@@ -6,6 +6,7 @@ const privileges = require('../privileges');
 
 module.exports = function (Posts) {
     Posts.endorse = async function (pid, uid) {
+        console.log("Calling toggleEndorse with UID VICKY2:", uid);
         return await toggleEndorse('endorse', pid, uid);
     };
 
