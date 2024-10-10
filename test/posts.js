@@ -143,6 +143,7 @@ describe('Post\'s', () => {
 			// await groups.join('administrators', adminUid);
 
 			adminUid = await user.create({ username: 'admin', password: '123456' });
+			console.log("Admin UID VICKY9:", adminUid); 
 			await groups.join('administrators', adminUid);
 			
 			globalModUid = await user.create({ username: 'global mod' });
@@ -164,7 +165,9 @@ describe('Post\'s', () => {
         });
 
         it('should allow an admin to endorse a post', async function () {
+			console.log("VICKY10", postResult.postData.pid, adminUid)
             const result = await apiPosts.endorse(postResult.postData.pid, adminUid);
+			console.log("VICKYC11 Endorsement result:", result); 
         	assert.strictEqual(result.isEndorsed, true);
         });
 
