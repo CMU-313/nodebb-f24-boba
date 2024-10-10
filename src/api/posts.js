@@ -514,9 +514,11 @@ postsAPI.getReplies = async (caller, { pid }) => {
 };
 
 postsAPI.endorse = async (caller, { pid }) => {
+	console.log("VICKYC3", pid, caller.uid);
     return await posts.endorse(pid, caller.uid);
 };
 
 postsAPI.unendorse = async (caller, { pid }) => {
+	console.log("VICKYC4", pid, caller.uid);
     return await posts.unendorse(pid, caller.uid);
 };
