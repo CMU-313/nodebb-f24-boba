@@ -18,7 +18,9 @@ Some sort of visual tag will appear on the post showing a TA or Professor has en
 ### Automated Tests
 
 ### 1. Test Location
-**Location**: test/posts.js, lines [135-165](https://github.com/CMU-313/nodebb-f24-boba/blob/f24/test/posts.js#L135-L165)
+#### a.
+**Location**: 
+- test/posts.js, lines [135-165](https://github.com/CMU-313/nodebb-f24-boba/blob/f24/test/posts.js#L135-L165)
 
 ### 2. What is Being Tested
 - **Tested Features**: The API for toggling the endorsed field for a Post.
@@ -27,3 +29,16 @@ Some sort of visual tag will appear on the post showing a TA or Professor has en
 ### 3. Coverage Justification
 - **Coverage Justification**:
 The tests cover all use cases of toggling the boolean field endorsed. By default, a post is not endorsed, and only one request to endorse/unendorse at a time should be processed. 
+
+#### b.
+**Location**: 
+Location: test/posts/create.js in Alice/Feature-endorse branch
+
+### 2. What is Being Tested
+**Tested Features**: The creation of posts with the endorsed attribute, verifying default behavior (where endorsed is set to false) and the initialization of endorsed to true as specified by the user.
+**Test Type**: Unit tests and back-end validation tests ensure that the endorsed field is handled correctly during post creation.
+
+### 3. Why the Tests Are Sufficient
+**Coverage Justification**: These tests cover critical scenarios around the endorsed attribute in post creation, ensuring both default and custom initialization works as intended. The default behavior test confirms that when endorsed is unspecified, the field defaults to false, maintaining standard post behavior. The specified behavior test validates that setting endorsed to true explicitly reflects in the backend data, demonstrating reliable customization.
+**Edge Cases**: The tests handle potential edge cases, such as a null endorsed value or unexpected input, maintaining data integrity and preventing unauthorized attribute modification.
+**Exclusion of Front-End Tests**: The tests are back-end focused, as UI interactions for post endorsement are manually validated. The primary emphasis remains on data accuracy in the database, which is critical for user-facing endorsement functionality.
