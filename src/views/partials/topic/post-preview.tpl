@@ -5,7 +5,13 @@
                 {buildAvatar(post.user, "24px", true, "", "user/picture")} {post.user.username}
             </a>
             <span class="timeago text-xs" title="{post.timestampISO}"></span>
+
+            <!-- add authorization if statement here when connecting to backend -->
+            <span class="green-dot"></span>
+            <span class="timeago text-xs" title="{post.timestampISO}"></span>
+
         </div>
         <div class="content">{post.content}</div>
+
     </div>
 </div>
