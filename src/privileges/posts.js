@@ -234,8 +234,9 @@ privsPosts.canEndorse = async function (uid) {
     }
 	console.error("Checking if UID", uid, "is admin...");
     const isAdmin = await user.isAdministrator(uid);
-	console.error("isAdmin result for UID", uid, ":", isAdmin);
+	console.error("isAdmin result for UID VICKY13", uid, ":", isAdmin);
     if (isAdmin) {
+		console.log("True VICKY14");
         return true;
     }
 	console.error("Checking if UID", uid, "is global moderator...");
