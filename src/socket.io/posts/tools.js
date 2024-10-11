@@ -11,6 +11,7 @@ const plugins = require('../../plugins');
 const social = require('../../social');
 const user = require('../../user');
 const utils = require('../../utils');
+const apiPosts = require('../../api/posts');
 
 module.exports = function (SocketPosts) {
 	SocketPosts.loadPostTools = async function (socket, data) {
@@ -91,5 +92,19 @@ module.exports = function (SocketPosts) {
 		})));
 
 		await Promise.all(logs);
+	};
+
+	SocketPosts.endorse = async function (socket, data) {
+		if (!data || !data.pid) {
+			throw new Error('[[error:invalid-data]]');
+		}
+		return await apiPosts.endorse(socket, { pid: data.pid });
+	};
+
+	SocketPosts.unendorse = async function (socket, data) {
+		if (!data || !data.pid) {
+			throw new Error('[[error:invalid-data]]');
+		}
+		return await apiPosts.unendorse(socket, { pid: data.pid });
 	};
 };
