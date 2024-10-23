@@ -51,6 +51,10 @@ jobs:
       - name: Install frontend repo dependencies
         run: |
           npm i ./nodebb-frontend-f24-boba
+
+      - name: Build 
+        run: |
+          ./nodebb build
           
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
