@@ -1,46 +1,26 @@
 'use strict';
 
-const Iroh = require('iroh');
+require('iroh');
 
-// from CoPilot
+// Asked co-pilot for a function to monitor the execution time of a function and log it to the console.
 function monitorFunction(fn, name) {
-	console.log(`Setting up Iroh monitoring for ${name}`);
+	console.log(`Setting up monitoring for ${name}`);
 
-	const stage = new Iroh.Stage(`
-        function monitored() {
-            try {
-                return target();
-            } catch(e) {
-                console.error(e);
-                throw e;
-            }
-        }
-    `);
-
-	// Iroh listeners
-	stage
-		.addListener(Iroh.CALL)
-		.on('before', (e) => {
-			console.log(`[IROH] ${name} called`);
-			e.setData('time', process.hrtime());
-		})
-		.on('after', (e) => {
-			const diff = process.hrtime(e.getData('time'));
-			const time = ((diff[0] * 1e9) + diff[1]) / 1e6;
-			console.log(`[IROH] ${name} took ${time}ms`);
-		});
-
-	// Return the original function with timing
-	return async function (...args) {
-		const start = process.hrtime();
+	return async function monitored(...args) {
 		console.log(`[START] ${name}`);
+		const start = process.hrtime();
 
 		try {
 			const result = await fn.apply(this, args);
-			const [s, ns] = process.hrtime(start);
-			const ms = ((s * 1000) + ns) / 1e6;
-			console.log(`[TIME] ${name} took ${ms.toFixed(2)}ms`);
-			console.log(`[END] ${name}`);
+			const [seconds, nanoseconds] = process.hrtime(start);
+			const milliseconds = (seconds * 1000) + (nanoseconds / 1000000);
+
+			console.log(`[END] ${name} took ${milliseconds.toFixed(2)}ms`);
+
+			if (milliseconds > 100) {
+				console.warn(`[SLOW] ${name} took ${milliseconds.toFixed(2)}ms`);
+			}
+
 			return result;
 		} catch (error) {
 			console.error(`[ERROR] ${name}:`, error);
@@ -51,8 +31,4 @@ function monitorFunction(fn, name) {
 
 module.exports = {
 	monitorFunction: monitorFunction,
-	CALL: Iroh.CALL,
-	FUNCTION: Iroh.FUNCTION,
-	TRY: Iroh.TRY,
 };
-
