@@ -2,7 +2,7 @@
 
 const nconf = require('nconf');
 const winston = require('winston');
-const irohMonitor = require('../iroh');
+const irohMonitor = require('../iroh/iroh-listener');
 
 const start = module.exports;
 const Topics = require('./topics');
