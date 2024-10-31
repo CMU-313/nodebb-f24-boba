@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "snyk": "^1.1294.0"
+    "@snyk/protect": "^1.657.0"
   }
 }
