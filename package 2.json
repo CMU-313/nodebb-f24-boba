@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "semgrep": "^0.0.1",
+    "snyk": "^1.1294.0"
+  }
+}
