@@ -1,5 +1,15 @@
 {
   "dependencies": {
     "@snyk/protect": "^1.657.0"
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
+    "eslint": "^9.13.0",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.11.0",
+    "mocha": "^10.8.2"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }
