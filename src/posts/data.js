@@ -67,6 +67,7 @@ function modifyPost(post, fields) {
 		if (post.hasOwnProperty('edited')) {
 			post.editedISO = post.edited !== 0 ? utils.toISOString(post.edited) : '';
 		}
+		post.isEnglish = post.isEnglish == "true" || post.isEnglish === undefined;
 
 		if (post.hasOwnProperty('endorsed')) {
 			post.endorsed = post.endorsed ? post.endorsed : false;
