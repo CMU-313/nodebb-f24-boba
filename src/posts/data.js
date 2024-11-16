@@ -71,5 +71,7 @@ function modifyPost(post, fields) {
 		if (post.hasOwnProperty('endorsed')) {
 			post.endorsed = post.endorsed ? post.endorsed : false;
 		}
+		// Mark post as "English" if decided by translator service or if it has no info
+		post.isEnglish = post.isEnglish === 'true' || post.isEnglish === undefined;
 	}
 }
